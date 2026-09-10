@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>コーチ・トレーナー ダッシュボード | KUKI GYMRATS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen text-white bg-[#0f1115]">
+  <div class="flex min-h-screen">
+
+    <!-- サイドバー -->
+    <aside class="w-60 bg-[#16181d] border-r border-gray-800 flex flex-col flex-shrink-0">
+      <div class="flex items-center gap-2 px-5 py-5 border-b border-gray-800">
+        <img src="images/logo.png" class="w-9 h-9 rounded-lg object-cover" alt="logo">
+        <div>
+          <div class="font-display font-semibold text-sm leading-tight">KUKI GYMRATS</div>
+          <div class="text-[11px] text-gray-500">管理ダッシュボード</div>
+        </div>
+      </div>
+      <nav class="flex-1 px-3 py-4 flex flex-col gap-1">
+        <button class="nav-item active flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium" data-view="overview"><i class="fa-solid fa-gauge-high w-5"></i>概要サマリー</button>
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium" data-view="pain"><i class="fa-solid fa-heart-pulse w-5"></i>痛み・コンディション監視</button>
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium" data-view="menu"><i class="fa-solid fa-clipboard-list w-5"></i>メニュー配信</button>
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium" data-view="optin"><i class="fa-solid fa-star w-5"></i>オプトイン承認</button>
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium" data-view="rehab"><i class="fa-solid fa-user-doctor w-5"></i>リハビリ管理</button>
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium" data-view="reflect"><i class="fa-solid fa-comment-dots w-5"></i>振り返り一覧</button>
+        <button class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium" data-view="players"><i class="fa-solid fa-users w-5"></i>選手管理・成長</button>
+      </nav>
+      <div class="px-4 py-4 border-t border-gray-800">
+        <div class="flex items-center gap-2 mb-3">
+          <div class="w-9 h-9 rounded-full bg-[var(--kuki-red)] flex items-center justify-center font-bold flex-shrink-0" id="user-avatar">-</div>
+          <div class="min-w-0">
+            <div id="user-name" class="text-sm font-medium truncate">-</div>
+            <div id="user-role" class="text-[11px] text-gray-500">-</div>
+          </div>
+        </div>
+        <button onclick="logout()" class="w-full text-xs text-gray-400 hover:text-white border border-gray-700 rounded-lg py-2"><i class="fa-solid fa-arrow-right-from-bracket mr-1"></i>ログアウト</button>
+      </div>
+    </aside>
+
+    <!-- メインコンテンツ -->
+    <main class="flex-1 overflow-y-auto">
+      <div id="view-overview" class="view-content p-8"></div>
+      <div id="view-pain" class="view-content p-8 hidden"></div>
+      <div id="view-menu" class="view-content p-8 hidden"></div>
+      <div id="view-optin" class="view-content p-8 hidden"></div>
+      <div id="view-rehab" class="view-content p-8 hidden"></div>
+      <div id="view-reflect" class="view-content p-8 hidden"></div>
+      <div id="view-players" class="view-content p-8 hidden"></div>
+    </main>
+  </div>
+
+<script src="js/api.js"></script>
+<script src="js/dashboard.js"></script>
+</body>
+</html>

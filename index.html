@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>KUKI GYMRATS | トレーニング管理システム</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="css/style.css">
+<style>
+  body { background: radial-gradient(circle at 50% 0%, #23262f 0%, #0f1115 60%); }
+  .role-card { transition: transform .15s ease, box-shadow .15s ease; }
+  .role-card:active { transform: scale(0.97); }
+</style>
+</head>
+<body class="min-h-screen text-white">
+  <div class="max-w-md mx-auto min-h-screen flex flex-col px-6 py-10">
+    <header class="flex flex-col items-center mb-10">
+      <img src="images/logo.png" alt="KUKI GYMRATS ロゴ" class="w-28 h-28 rounded-2xl shadow-lg mb-4 object-cover">
+      <h1 class="font-display text-3xl font-bold tracking-wide">KUKI GYMRATS</h1>
+      <p class="text-gray-400 text-sm mt-1">ウエイトトレーニング管理システム</p>
+      <p class="text-gray-500 text-xs mt-1">〜日本一への軌跡〜</p>
+    </header>
+
+    <main class="flex-1 flex flex-col gap-4">
+      <p class="text-gray-400 text-sm text-center mb-2">ログインするユーザーを選択してください</p>
+
+      <section>
+        <h2 class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider"><i class="fa-solid fa-user-shield mr-1"></i>コーチ・トレーナー</h2>
+        <div id="staff-list" class="flex flex-col gap-3 mb-6"></div>
+      </section>
+
+      <section>
+        <h2 class="text-xs font-semibold text-gray-500 mb-2 uppercase tracking-wider"><i class="fa-solid fa-person-running mr-1"></i>選手（41名）</h2>
+        <div class="relative mb-3">
+          <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
+          <input id="player-search" type="text" placeholder="選手名・背番号で検索" class="w-full bg-[#1f2229] border border-gray-700 rounded-xl pl-9 pr-3 py-3 text-sm focus:outline-none focus:border-[var(--kuki-red)]">
+        </div>
+        <div id="player-list" class="grid grid-cols-2 gap-3 max-h-[38vh] overflow-y-auto no-scrollbar pb-2"></div>
+      </section>
+    </main>
+
+    <footer class="text-center text-gray-600 text-xs mt-8">
+      &copy; 2026 KUKI GYMRATS. Demo App.
+    </footer>
+  </div>
+
+<script src="js/api.js"></script>
+<script>
+let allUsers = [];
+
+async function init() {
+  try {
+    allUsers = await Api.listAll('users');
+  } catch (e) {
+    console.error(e);
+    document.getElementById('staff-list').innerHTML = '<p class="text-red-400 text-sm">データの取得に失敗しました。</p>';
+    return;
+  }
+  renderStaff();
+  renderPlayers('');
+}
+
+function renderStaff() {
+  const staff = allUsers.filter(u => u.role === 'coach' || u.role === 'trainer');
+  const el = document.getElementById('staff-list');
+  el.innerHTML = staff.map(u => `
+    <button onclick="loginAs('${u.id}')" class="role-card w-full flex items-center gap-3 bg-[#1f2229] border border-gray-700 rounded-xl p-4 text-left hover:border-[var(--kuki-red)]">
+      <div class="w-11 h-11 rounded-full bg-[var(--kuki-red)] flex items-center justify-center font-bold text-lg flex-shrink-0">
+        ${u.name.charAt(0)}
+      </div>
+      <div class="flex-1">
+        <div class="font-semibold">${u.name}</div>
+        <div class="text-xs text-gray-400">${u.role === 'coach' ? 'コーチ' : 'トレーナー'} ・ PCダッシュボード</div>
+      </div>
+      <i class="fa-solid fa-chevron-right text-gray-500"></i>
+    </button>
+  `).join('');
+}
+
+function renderPlayers(filter) {
+  const players = allUsers.filter(u => u.role === 'player');
+  const filtered = players.filter(u =>
+    u.name.includes(filter) || String(u.jersey_number).includes(filter)
+  ).sort((a,b) => (a.jersey_number||0) - (b.jersey_number||0));
+
+  const el = document.getElementById('player-list');
+  if (filtered.length === 0) {
+    el.innerHTML = '<p class="col-span-2 text-gray-500 text-sm text-center py-6">該当する選手がいません</p>';
+    return;
+  }
+  el.innerHTML = filtered.map(u => `
+    <button onclick="loginAs('${u.id}')" class="role-card flex items-center gap-2 bg-[#1f2229] border border-gray-700 rounded-xl p-3 text-left hover:border-[var(--kuki-red)] ${u.rehab_phase_id ? 'alert-card' : ''}">
+      <div class="w-9 h-9 rounded-full bg-gray-700 flex items-center justify-center font-bold text-sm flex-shrink-0">
+        ${u.jersey_number ?? '-'}
+      </div>
+      <div class="flex-1 min-w-0">
+        <div class="font-medium text-sm truncate">${u.name}</div>
+        <div class="text-[10px] text-gray-400 truncate">${u.position || ''}${u.rehab_phase_id ? ' ・ リハビリ中' : ''}</div>
+      </div>
+    </button>
+  `).join('');
+}
+
+function loginAs(userId) {
+  const user = allUsers.find(u => u.id === userId);
+  if (!user) return;
+  Session.setUser(user);
+  if (user.role === 'player') {
+    location.href = 'player.html';
+  } else {
+    location.href = 'dashboard.html';
+  }
+}
+
+document.getElementById('player-search').addEventListener('input', (e) => {
+  renderPlayers(e.target.value.trim());
+});
+
+init();
+</script>
+</body>
+</html>

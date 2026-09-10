@@ -1,0 +1,212 @@
+/* KUKI GYMRATS 共通スタイル */
+
+:root {
+  --kuki-red: #d61f2c;
+  --kuki-dark: #16181d;
+  --kuki-dark2: #1f2229;
+  --kuki-gray: #6b7280;
+  --kuki-green: #16a34a;
+  --kuki-orange: #f59e0b;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: 'Noto Sans JP', 'Inter', sans-serif;
+  background-color: #0f1115;
+}
+
+.font-display {
+  font-family: 'Oswald', 'Noto Sans JP', sans-serif;
+}
+
+/* スクロールバー非表示（モバイル向け） */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* スワイプ完了ボタン */
+.swipe-track {
+  position: relative;
+  height: 56px;
+  border-radius: 28px;
+  background: #2a2d36;
+  overflow: hidden;
+  touch-action: none;
+  user-select: none;
+}
+.swipe-track.completed {
+  background: linear-gradient(90deg, #16a34a, #22c55e);
+}
+.swipe-handle {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--kuki-red);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  transition: left 0.15s ease;
+  cursor: grab;
+}
+.swipe-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #9ca3af;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  pointer-events: none;
+}
+
+/* ボディマップ */
+.body-map-svg .part {
+  fill: #374151;
+  stroke: #4b5563;
+  stroke-width: 1;
+  cursor: pointer;
+  transition: fill 0.15s;
+}
+.body-map-svg .part:hover {
+  fill: #6b7280;
+}
+.body-map-svg .part.selected {
+  fill: var(--kuki-red);
+  stroke: #fff;
+}
+.body-map-svg .part.pain-level-1 { fill: #fde68a; }
+.body-map-svg .part.pain-level-2 { fill: #fbbf24; }
+.body-map-svg .part.pain-level-3 { fill: #f59e0b; }
+.body-map-svg .part.pain-level-4 { fill: #ea580c; }
+.body-map-svg .part.pain-level-5 { fill: #dc2626; }
+
+/* トグルスイッチ */
+.toggle-switch {
+  width: 56px;
+  height: 32px;
+  border-radius: 16px;
+  background: #374151;
+  position: relative;
+  transition: background 0.2s;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+.toggle-switch.on {
+  background: var(--kuki-green);
+}
+.toggle-switch .knob {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: white;
+  transition: left 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+.toggle-switch.on .knob {
+  left: 27px;
+}
+
+/* +/- ステッパー */
+.stepper-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: #2a2d36;
+  color: white;
+  font-size: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  active: opacity 0.7;
+  user-select: none;
+}
+.stepper-btn:active {
+  background: var(--kuki-red);
+}
+
+/* セット行の完了チェックボタン */
+.check-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #2a2d36;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: background 0.15s, color 0.15s;
+  cursor: pointer;
+}
+.check-btn.done {
+  background: var(--kuki-green);
+  color: white;
+}
+
+/* セット行 */
+.set-row {
+  transition: opacity 0.15s;
+}
+.set-row.done {
+  opacity: 0.75;
+}
+
+/* コメント吹き出し */
+.comment-bubble {
+  background: #16181d;
+  border-radius: 10px;
+  padding: 8px 12px;
+}
+
+/* カードのハイライト（痛みあり） */
+.alert-card {
+  border-left: 4px solid var(--kuki-red);
+  background: rgba(214, 31, 44, 0.08);
+}
+
+/* ページ遷移フェード */
+.fade-in {
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* PCダッシュボード サイドナビ */
+.nav-item {
+  color: #9ca3af;
+  background: transparent;
+  text-align: left;
+  transition: background 0.15s, color 0.15s;
+}
+.nav-item:hover {
+  background: #1f2229;
+  color: white;
+}
+.nav-item.active {
+  background: var(--kuki-red);
+  color: white;
+}
+
+/* 下タブナビ（モバイル） */
+.tabbar-item.active {
+  color: var(--kuki-red);
+}
+.tabbar-item.active .tabbar-icon {
+  transform: translateY(-2px);
+}

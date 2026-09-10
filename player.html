@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>選手用アプリ | KUKI GYMRATS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="min-h-screen text-white bg-[#0f1115] pb-24">
+  <div class="max-w-md mx-auto min-h-screen relative">
+
+    <!-- ヘッダー -->
+    <header class="sticky top-0 z-20 bg-[#16181d]/95 backdrop-blur border-b border-gray-800 px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <img src="images/logo.png" class="w-8 h-8 rounded-lg object-cover" alt="logo">
+        <div>
+          <div class="font-display text-sm font-semibold leading-tight">KUKI GYMRATS</div>
+          <div id="header-user-name" class="text-[11px] text-gray-400 leading-tight">-</div>
+        </div>
+      </div>
+      <button onclick="logout()" class="text-gray-400 hover:text-white text-sm px-2 py-1"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+    </header>
+
+    <!-- リハビリバナー -->
+    <div id="rehab-banner" class="hidden mx-4 mt-3 bg-amber-500/15 border border-amber-500/40 text-amber-300 rounded-xl px-4 py-3 text-sm flex items-start gap-2">
+      <i class="fa-solid fa-heart-pulse mt-0.5"></i>
+      <div id="rehab-banner-text"></div>
+    </div>
+
+    <!-- タブコンテンツ -->
+    <main id="tab-home" class="tab-content px-4 py-4 fade-in"></main>
+    <main id="tab-graph" class="tab-content px-4 py-4 fade-in hidden"></main>
+    <main id="tab-reflect" class="tab-content px-4 py-4 fade-in hidden"></main>
+    <main id="tab-optin" class="tab-content px-4 py-4 fade-in hidden"></main>
+
+    <!-- 下タブバー -->
+    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#16181d] border-t border-gray-800 flex justify-around py-2 z-30">
+      <button class="tabbar-item active flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="home">
+        <i class="fa-solid fa-house tabbar-icon"></i>
+        <span class="text-[10px]">ホーム</span>
+      </button>
+      <button class="tabbar-item flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="graph">
+        <i class="fa-solid fa-chart-line tabbar-icon"></i>
+        <span class="text-[10px]">成長グラフ</span>
+      </button>
+      <button class="tabbar-item flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="reflect">
+        <i class="fa-solid fa-comment-dots tabbar-icon"></i>
+        <span class="text-[10px]">振り返り</span>
+      </button>
+      <button class="tabbar-item flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="optin">
+        <i class="fa-solid fa-star tabbar-icon"></i>
+        <span class="text-[10px]">メニュー希望</span>
+      </button>
+    </nav>
+  </div>
+
+<script src="js/api.js"></script>
+<script src="js/player.js"></script>
+</body>
+</html>
