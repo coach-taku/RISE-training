@@ -10,8 +10,15 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <link rel="stylesheet" href="css/style.css">
+<style>
+  /* iOS Safe Area 対応 */
+  .pb-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+  nav.bottom-nav {
+    padding-bottom: calc(0.5rem + env(safe-area-inset-bottom, 0px));
+  }
+</style>
 </head>
-<body class="min-h-screen text-white bg-[#0f1115] pb-24">
+<body class="min-h-screen text-white bg-[#0f1115]" style="padding-bottom: 80px;">
   <div class="max-w-md mx-auto min-h-screen relative">
 
     <!-- ヘッダー -->
@@ -19,41 +26,51 @@
       <div class="flex items-center gap-2">
         <img src="images/logo.png" class="w-8 h-8 rounded-lg object-cover" alt="logo">
         <div>
-          <div class="font-display text-sm font-semibold leading-tight">KUKI GYMRATS</div>
-          <div id="header-user-name" class="text-[11px] text-gray-400 leading-tight">-</div>
+          <div class="font-display text-sm font-semibold leading-tight tracking-wide">KUKI GYMRATS</div>
+          <div id="header-user-name" class="text-[11px] text-gray-400 leading-tight">読み込み中...</div>
         </div>
       </div>
-      <button onclick="logout()" class="text-gray-400 hover:text-white text-sm px-2 py-1"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+      <button onclick="logout()" class="text-gray-500 hover:text-white text-sm px-2 py-1 rounded-lg hover:bg-gray-800 transition-colors" title="ログアウト">
+        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+      </button>
     </header>
 
-    <!-- リハビリバナー -->
-    <div id="rehab-banner" class="hidden mx-4 mt-3 bg-amber-500/15 border border-amber-500/40 text-amber-300 rounded-xl px-4 py-3 text-sm flex items-start gap-2">
-      <i class="fa-solid fa-heart-pulse mt-0.5"></i>
-      <div id="rehab-banner-text"></div>
+    <!-- リハビリバナー（非表示がデフォルト） -->
+    <div id="rehab-banner" class="hidden mx-4 mt-3 bg-amber-500/12 border border-amber-500/35 text-amber-300 rounded-xl px-4 py-3 text-sm">
+      <div class="flex items-start gap-2">
+        <i class="fa-solid fa-heart-pulse mt-0.5 flex-shrink-0"></i>
+        <div id="rehab-banner-text" class="text-xs leading-relaxed"></div>
+      </div>
+    </div>
+
+    <!-- ローディング中 -->
+    <div id="app-loading" class="flex flex-col items-center justify-center py-20 gap-3">
+      <div class="w-8 h-8 border-2 border-[var(--kuki-red)] border-t-transparent rounded-full animate-spin"></div>
+      <p class="text-gray-400 text-sm">データを読み込み中...</p>
     </div>
 
     <!-- タブコンテンツ -->
-    <main id="tab-home" class="tab-content px-4 py-4 fade-in"></main>
-    <main id="tab-graph" class="tab-content px-4 py-4 fade-in hidden"></main>
+    <main id="tab-home"    class="tab-content px-4 py-4 fade-in hidden"></main>
+    <main id="tab-graph"   class="tab-content px-4 py-4 fade-in hidden"></main>
     <main id="tab-reflect" class="tab-content px-4 py-4 fade-in hidden"></main>
-    <main id="tab-optin" class="tab-content px-4 py-4 fade-in hidden"></main>
+    <main id="tab-optin"   class="tab-content px-4 py-4 fade-in hidden"></main>
 
     <!-- 下タブバー -->
-    <nav class="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#16181d] border-t border-gray-800 flex justify-around py-2 z-30">
-      <button class="tabbar-item active flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="home">
-        <i class="fa-solid fa-house tabbar-icon"></i>
+    <nav class="bottom-nav fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-[#16181d]/98 border-t border-gray-800 flex justify-around py-2 z-30">
+      <button class="tabbar-item active flex flex-col items-center gap-0.5 px-4 py-1.5 text-gray-400" data-tab="home">
+        <i class="fa-solid fa-house tabbar-icon text-base"></i>
         <span class="text-[10px]">ホーム</span>
       </button>
-      <button class="tabbar-item flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="graph">
-        <i class="fa-solid fa-chart-line tabbar-icon"></i>
+      <button class="tabbar-item flex flex-col items-center gap-0.5 px-4 py-1.5 text-gray-400" data-tab="graph">
+        <i class="fa-solid fa-chart-line tabbar-icon text-base"></i>
         <span class="text-[10px]">成長グラフ</span>
       </button>
-      <button class="tabbar-item flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="reflect">
-        <i class="fa-solid fa-comment-dots tabbar-icon"></i>
+      <button class="tabbar-item flex flex-col items-center gap-0.5 px-4 py-1.5 text-gray-400" data-tab="reflect">
+        <i class="fa-solid fa-comment-dots tabbar-icon text-base"></i>
         <span class="text-[10px]">振り返り</span>
       </button>
-      <button class="tabbar-item flex flex-col items-center gap-1 px-4 py-1 text-gray-400" data-tab="optin">
-        <i class="fa-solid fa-star tabbar-icon"></i>
+      <button class="tabbar-item flex flex-col items-center gap-0.5 px-4 py-1.5 text-gray-400" data-tab="optin">
+        <i class="fa-solid fa-star tabbar-icon text-base"></i>
         <span class="text-[10px]">メニュー希望</span>
       </button>
     </nav>
